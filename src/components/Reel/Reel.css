@@ -1,0 +1,42 @@
+.Reel-root {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 300px;
+    justify-content: center;
+    position: relative;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+    .Reel {
+        position: relative;
+        /* left: 0;
+        bottom: 0; */
+
+        display: flex;
+        flex-direction: column;
+        /* animation: Reel-spin infinite 1s linear; */
+        animation: MoveUpDown 1s linear infinite;
+    }
+}
+
+@keyframes MoveUpDown {
+    100% {
+      bottom: 0;
+    }
+    50% {
+      bottom: 100px;
+    }
+  }
+
+@keyframes Reel-spin {
+    from {
+        
+      /* transform: rotate(0deg); */
+    }
+    to {
+        padding-top: 1000px;
+      /* transform: rotate(360deg); */
+    }
+}
