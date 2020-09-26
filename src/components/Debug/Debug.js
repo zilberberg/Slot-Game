@@ -6,7 +6,7 @@ class Debug extends React.Component {
 
     return (
       <div className={"Debug-root"}>
-          asdasd
+          DEBUG
       </div>
     )
   }

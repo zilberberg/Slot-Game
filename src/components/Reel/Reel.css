@@ -3,9 +3,43 @@
     flex-direction: column;
     overflow: hidden;
     height: 300px;
+    width: 100px;
+
     justify-content: center;
     position: relative;
 }
+
+.Reel-body {
+    display: flex;
+    flex-direction: column;
+
+    height: 300px;
+    width: 100px;
+
+    top: -100px;
+    position: absolute;
+
+    /* background-image: 
+        url('../../images/2xBAR.png'),
+        url('../../images/7.png'),
+        url('../../images/2xBAR.png'),
+        url('../../images/2xBAR.png'),
+        url('../../images/3xBAR.png');
+    background-position:
+        top center, 
+        center center,
+        center center,
+
+        center center,
+
+        bottom center; 
+    background-repeat:
+        no-repeat;  */
+}
+
+
+
+
 
 
 @media (prefers-reduced-motion: no-preference) {
