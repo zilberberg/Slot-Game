@@ -40,7 +40,7 @@ class App extends React.Component {
       isDebugMode: false,
       isPaid: false,
 
-      // first tier = Reel
+      // first tier = Reel index
       // second tier = result , position
       debugConfig: {
         0: {
@@ -57,6 +57,8 @@ class App extends React.Component {
         }
       },
 
+      // first tier = Reel index
+      // array of indices
       winningDictionary: {
         0: [], 1: [], 2: []
       },
