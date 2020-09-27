@@ -6,6 +6,7 @@ import PayTable from './components/PayTable/PayTable';
 import SpinButton from './components/SpinButton/SpinButton';
 import ReelsContainer from './components/ReelsContainer/ReelsContainer';
 import Debug from './components/Debug/Debug';
+import Merge from 'deepmerge';
 
 const consecutivePayDictionary = {
   5: {
@@ -31,15 +32,16 @@ class App extends React.Component {
     this.state = {
       balance: 1000,
       pay: 0,
-      isSpinning: false,
+      isSpinning: true,
 
       results: [],
       combinedResults: [],
       isInitSpin: false,
       isDebugMode: false,
+      isPaid: false,
 
       // first tier = Reel
-      // third tier = result , position
+      // second tier = result , position
       debugConfig: {
         0: {
             0: "3",
@@ -53,7 +55,11 @@ class App extends React.Component {
             0: "3",
             1: "0",
         }
-      }
+      },
+
+      winningDictionary: {
+        0: [], 1: [], 2: []
+      },
     };
 
     this.finishHandler = this.finishHandler.bind(this);
@@ -62,19 +68,30 @@ class App extends React.Component {
     this.handleDebugConfig = this.handleDebugConfig.bind(this);
 }
 
-
-
-finishHandler(reelResults) {
+componentDidMount() {
   this.setState({
-    results: [...this.state.results, [...reelResults]]
+    balance: this.state.balance - 3,
+  })
+}
+
+finishHandler(reelResults, isLastReel) {
+  this.setState({
+    results: [...this.state.results, [...reelResults]],
+    isSpinning: isLastReel ? false : true,
   });
 }
 
 toggleSpin() {
-  this.setState({
-    isInitSpin: !this.state.isInitSpin,
-  });
-
+  if (!this.state.isSpinning) {
+    this.setState({
+      isInitSpin: !this.state.isInitSpin,
+      balance: this.state.balance - 3,
+      isPaid: false,
+      pay: 0,
+      isSpinning: true,
+      winningDictionary: {0: [], 1: [], 2: []}
+    });
+  }
 }
 
 componentDidUpdate() {
@@ -88,25 +105,30 @@ componentDidUpdate() {
 }
 
 checkResults() {
-  const consecutivePay = this.checkConsecutiveResults();
-  const comboPay = this.checkCombination();
+  const [consecutivePay, conWinDict] = this.checkConsecutiveResults();
+  const [comboPay, comWinDict] = this.checkCombination();
 
+  const merged = Merge(conWinDict, comWinDict);
   // debugger
   this.setState({
     pay: consecutivePay + comboPay,
+    isPaid: (consecutivePay + comboPay > 0),
     balance: this.state.balance + consecutivePay + comboPay,
     results: [],
     combinedResults: [],
+    winningDictionary: merged,    
   })
 }
 
 checkConsecutiveResults() {
   let cunsecutivePay = 0;
+  let consecutiveWinDict = {0: [], 1: [], 2: []};
   for (let i = 0; i < 3; i++) {
     let selectedCounter = i * 3;
     if (this.state.combinedResults[selectedCounter] == this.state.combinedResults[selectedCounter + 1] &&
       this.state.combinedResults[selectedCounter + 1] == this.state.combinedResults[selectedCounter + 2]) {
         
+        consecutiveWinDict[i] = [0,1,2];
         if (consecutivePayDictionary[this.state.combinedResults[selectedCounter]]) {
           if (consecutivePayDictionary[this.state.combinedResults[selectedCounter]][i]) {
             cunsecutivePay += consecutivePayDictionary[this.state.combinedResults[selectedCounter]][i];
@@ -117,7 +139,7 @@ checkConsecutiveResults() {
     } 
   }
 
-  return cunsecutivePay;
+  return [cunsecutivePay, consecutiveWinDict];
 }
 
 checkCombination() {
@@ -125,6 +147,8 @@ checkCombination() {
   let comboSum = {
     2: 0, 4: 0, 5: 0
   };
+
+  let comWinDict = {0: [], 1: [], 2: []};
 
   for (let i = 0; i < this.state.combinedResults.length; i++) {
     if (combinationPayDictionary[this.state.combinedResults[i]]) {
@@ -135,10 +159,18 @@ checkCombination() {
   Object.keys(comboSum).map((key) => {
     if (comboSum[key] == 3) {
       comboPay += combinationPayDictionary[key];
+
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (this.state.results[i][j] == key) {
+            comWinDict[i].push(j);
+          }
+        }
+      }
     }
   })
 
-  return comboPay;
+  return [comboPay, comWinDict];
 }
 
 combineResults() {
@@ -152,7 +184,7 @@ combineResults() {
   }
   this.setState({
     combinedResults: combinedResults,
-  })
+  });
 }
 
 startSpin() {
@@ -162,9 +194,11 @@ startSpin() {
 }
 
 toggleMode() {
-  this.setState({
-    isDebugMode: !this.state.isDebugMode,
-  })
+  if (!this.state.isSpinning) {
+    this.setState({
+      isDebugMode: !this.state.isDebugMode,
+    });
+  }  
 }
 
 handleDebugConfig(value, reelNum, ruleType) {
@@ -176,14 +210,13 @@ handleDebugConfig(value, reelNum, ruleType) {
   });
 }
 
-
   render() {
     return (
       <div className={"App-root"}>
         <div className={"App-container"}>
           <div className={"rowStyle"}>
             <Balance balance={this.state.balance}/>
-            <PayTable pay={this.state.pay}/>
+            <PayTable pay={this.state.pay} isPaid={this.state.isPaid}/>
             <SpinButton toggleSpin={this.toggleSpin}/>
           </div>
           <div className={"rowStyle"}>
@@ -196,6 +229,7 @@ handleDebugConfig(value, reelNum, ruleType) {
             isInitSpin={this.state.isInitSpin}
             isDebugMode={this.state.isDebugMode}
             debugConfig={this.state.debugConfig}
+            winsPositions={this.state.winningDictionary}
             />
           </div>
           <div className={"rowStyle"}>

@@ -6,7 +6,9 @@ class SpinButton extends React.Component {
 
     return (
       <div className={"SpinButton-root"} onClick={this.props.toggleSpin}>
-          SPIN
+          <div className={"SpinButton"}>
+            SPIN
+          </div>
       </div>
     )
   }

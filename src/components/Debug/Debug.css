@@ -1,5 +1,6 @@
 .Debug-root {
     width: 100%;
+    padding: 20px;
 }
 
 .row-style {
@@ -17,8 +18,19 @@
 .Toggle-button {
     border: 1px solid black;
     cursor: pointer;
+    padding: 10px;
+    margin: auto;
 }
 
 .Select-style {
     width: 50%;
+}
+
+.Reel-title-style {
+    margin: auto;
+    padding: 10px;
+}
+
+.Mode-container {
+    margin: auto;
 }

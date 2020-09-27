@@ -1,3 +1,14 @@
 .SpinButton-root {
     cursor: pointer;
+    display: flex;
+    border: 3px solid black;
+    width: 50px;
+    height: 50px;
+    background-color: #ffd166;
+    border-radius: 45px;
+    
+}
+
+.SpinButton {
+    margin: auto;
 }

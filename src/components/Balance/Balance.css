@@ -1,6 +1,10 @@
-.Text-container {
-    border: 1px solid black;
+.Balance-container {
+    border: 3px solid black;
     width: 200px;
     padding: 10px;
+    display: flex;
 }
 
+.Balance-text-container {
+    margin: auto;
+}

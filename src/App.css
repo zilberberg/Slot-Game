@@ -1,12 +1,16 @@
 .App-root {
   display: flex;
   height: 100vh;
+  font-weight: bold;
 }
 
 .rowStyle {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
+  width: 900px;
+  padding: 20px;
+  border: 3px solid black;
 }
 
 .App-container {

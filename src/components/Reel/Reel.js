@@ -34,7 +34,7 @@ class Reel extends React.Component {
             timeRemaining: 1000,
             speed: 80,
             offsetSpeed: 50,
-            isSpinning: true,
+            isSpinning: false,
             isInitSpin: false,
             position: 0,
             reelTop: "",
@@ -53,6 +53,7 @@ class Reel extends React.Component {
         }  
         
         this.setState({
+            isSpinning: true,
             isInitSpin: !this.state.isInitSpin,
             timeRemaining: this.props.timer        
         });
@@ -87,9 +88,12 @@ class Reel extends React.Component {
     }
 
     getReelResults() {
-        const firstResult = this.ReelRef.current.children[1].id;
-        const secondResult = this.ReelRef.current.children[2].id;
-        const thirdResult = this.ReelRef.current.children[3].id;
+        this.setState({
+            isSpinning: false,
+        })
+        const firstResult = this.ReelRef.current.children[2].id;
+        const secondResult = this.ReelRef.current.children[3].id;
+        const thirdResult = this.ReelRef.current.children[4].id;
         const resultsCol = [firstResult, secondResult, thirdResult];
         this.props.onFinish(resultsCol);
     }
@@ -135,20 +139,22 @@ class Reel extends React.Component {
     }
 
     renderReel() {
+        let isMarked = false;
         return (
             this.state.reelCol.map((sym, i) => {
+                if (this.props.winsPositions.length > 0 && this.props.winsPositions.includes(i - 2)) {
+                    isMarked = true;
+                } else {
+                    isMarked = false;
+                }
                 return (
-                    <img className={"Reel-img"} key={i} id={sym.symValue} src={sym.symSrc} style={{width: '100px', height: '100px'}}/>
+                    <img className={"Reel-img"} key={i  + this.props.id } id={sym.symValue} src={sym.symSrc} style={{backgroundColor: isMarked ? "#ef476f66" : "transparent",width: '100px', height: '100px'}}/>
                 )
             })
         );
     }
 
     render() {
-        const { isSpinning } = this.props;
-
-        let { position, current } = this.state;   
-
         return (
         <div className={"Reel-root"}>
             <div className={"Reel-body"} ref={this.ReelRef}>

@@ -19,13 +19,20 @@ class ReelsContainer extends React.Component {
     renderReels() {
         return (
             reelsDictionary.map((reel, i) => {
+                const arr = [...this.props.winsPositions[i]];
+                if (arr.length > 0) {
+                    // debugger
+                }
                 return (
                     <Reel 
+                        key={i}
+                        id={i+1}
                         isInitSpin={this.props.isInitSpin} 
-                        isSpinning timer={reel.ms} 
-                        onFinish={this.props.finishHandler} 
+                        timer={reel.ms} 
+                        onFinish={(e) => this.props.finishHandler(e, i == 2)} 
                         isDebugMode={this.props.isDebugMode}
                         debugConfig={this.props.debugConfig[i]}
+                        winsPositions={arr}
                     />
                 )
             })

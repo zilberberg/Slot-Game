@@ -7,6 +7,7 @@
 
     justify-content: center;
     position: relative;
+    border: 4px solid black;
 }
 
 .Reel-body {
@@ -20,23 +21,6 @@
     position: absolute;
 
     transition: 0.1s ease;
-
-    /* background-image: 
-        url('../../images/2xBAR.png'),
-        url('../../images/7.png'),
-        url('../../images/2xBAR.png'),
-        url('../../images/2xBAR.png'),
-        url('../../images/3xBAR.png');
-    background-position:
-        top center, 
-        center center,
-        center center,
-
-        center center,
-
-        bottom center; 
-    background-repeat:
-        no-repeat;  */
 }
 
 .Reel-img {
@@ -45,38 +29,7 @@
     width: 100px;
     height: 100px;
     top: 0px;
-    
-}
 
-@media (prefers-reduced-motion: no-preference) {
-    .Reel {
-        position: relative;
-        /* left: 0;
-        bottom: 0; */
+    /* background-color: #ef476f66; */
 
-        display: flex;
-        flex-direction: column;
-        /* animation: Reel-spin infinite 1s linear; */
-        animation: MoveUpDown 1s linear infinite;
-    }
-}
-
-@keyframes MoveUpDown {
-    100% {
-      bottom: 0;
-    }
-    50% {
-      bottom: 100px;
-    }
-  }
-
-@keyframes Reel-spin {
-    from {
-        
-      /* transform: rotate(0deg); */
-    }
-    to {
-        padding-top: 1000px;
-      /* transform: rotate(360deg); */
-    }
 }

@@ -38,7 +38,9 @@ class Debug extends React.Component {
             reelsDictionary.map((reel, i) => {
                 return (
                     <div className={"col-style"} key={i}>
-                        {reel.title + " Reel"}
+                        <div className={"Reel-title-style"}>
+                            {reel.title + " Reel"}
+                        </div>
                         <div className={"row-style"}>
                             <SelectContainer options={resultsOptions} handleChange={(e) => this.props.onConfigChange(e, i, 0)}/>
                             <SelectContainer options={positionOptions} handleChange={(e) => this.props.onConfigChange(e, i, 1)}/>
@@ -62,7 +64,8 @@ class Debug extends React.Component {
                 <div className={"Toggle-button"} onClick={this.props.toggleMode}>
                     {"Toggle Mode"}
                 </div>
-                <div>
+                <div className={"Mode-container"}>
+                    {"Curren mode: "}
                     {isDebugMode ? "Fixed Mode" : "Random Mode"}
                 </div>
             </div>     

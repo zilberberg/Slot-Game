@@ -6,8 +6,8 @@ class PayTable extends React.Component {
     const { pay } = this.props;
     return (
       <div className={"Pay-container"}>
-          <div className={"Blink-effect"}/>
-          <span>{pay}</span>
+          <div className={this.props.isPaid ? "Blink-effect" : ""}/>
+          <div className={"Pay-text-container"}>{"Current pay: " + pay}</div>
       </div>
     )
   }
