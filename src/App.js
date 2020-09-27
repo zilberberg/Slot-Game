@@ -36,11 +36,33 @@ class App extends React.Component {
       results: [],
       combinedResults: [],
       isInitSpin: false,
+      isDebugMode: false,
+
+      // first tier = Reel
+      // third tier = result , position
+      debugConfig: {
+        0: {
+            0: "3",
+            1: "0",
+        },
+        1: {
+            0: "3",
+            1: "0",
+        },
+        2: {
+            0: "3",
+            1: "0",
+        }
+      }
     };
 
     this.finishHandler = this.finishHandler.bind(this);
     this.toggleSpin = this.toggleSpin.bind(this);
+    this.toggleMode = this.toggleMode.bind(this);
+    this.handleDebugConfig = this.handleDebugConfig.bind(this);
 }
+
+
 
 finishHandler(reelResults) {
   this.setState({
@@ -69,6 +91,7 @@ checkResults() {
   const consecutivePay = this.checkConsecutiveResults();
   const comboPay = this.checkCombination();
 
+  // debugger
   this.setState({
     pay: consecutivePay + comboPay,
     balance: this.state.balance + consecutivePay + comboPay,
@@ -128,7 +151,6 @@ combineResults() {
     }
   }
   this.setState({
-    results: [],
     combinedResults: combinedResults,
   })
 }
@@ -139,9 +161,21 @@ startSpin() {
   })
 }
 
-initiateSpin() {
-
+toggleMode() {
+  this.setState({
+    isDebugMode: !this.state.isDebugMode,
+  })
 }
+
+handleDebugConfig(value, reelNum, ruleType) {
+  let config = this.state.debugConfig;
+  config[reelNum][ruleType] = value;
+
+  this.setState({
+      debugConfig: config
+  });
+}
+
 
   render() {
     return (
@@ -160,10 +194,12 @@ initiateSpin() {
             secondReel={this.state.secondReel} 
             thirdReel={this.state.thirdReel}
             isInitSpin={this.state.isInitSpin}
+            isDebugMode={this.state.isDebugMode}
+            debugConfig={this.state.debugConfig}
             />
           </div>
           <div className={"rowStyle"}>
-            <Debug/>
+            <Debug isDebugMode={this.state.isDebugMode} toggleMode={this.toggleMode} onConfigChange={this.handleDebugConfig}/>
           </div>
         </div>      
       </div>

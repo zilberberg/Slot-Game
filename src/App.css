@@ -6,8 +6,10 @@
 .rowStyle {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .App-container {
   margin: auto;
 }
+

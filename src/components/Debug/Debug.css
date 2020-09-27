@@ -1,0 +1,24 @@
+.Debug-root {
+    width: 100%;
+}
+
+.row-style {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.col-style {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.Toggle-button {
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.Select-style {
+    width: 50%;
+}

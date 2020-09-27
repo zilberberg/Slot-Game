@@ -32,10 +32,15 @@ class Reel extends React.Component {
 
         this.state = {
             timeRemaining: 1000,
+            speed: 80,
+            offsetSpeed: 50,
             isSpinning: true,
             isInitSpin: false,
+            position: 0,
+            reelTop: "",
         };
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+
+        let effectTimer;
     };
 
     forceUpdateHandler(){
@@ -48,76 +53,92 @@ class Reel extends React.Component {
         }  
         
         this.setState({
-          timeRemaining: this.props.timer        
+            isInitSpin: !this.state.isInitSpin,
+            timeRemaining: this.props.timer        
         });
     
         this.timer = setInterval(() => {
           this.tick()
-        }, 100);      
+        }, this.state.speed);
+    }
+    
+    offsetReel() {
+        // debugger
+        this.ReelRef.current.style.cssText = "transition: none; top: -200px;";
+        this.state.reelCol.unshift(this.state.reelCol.pop());
+
+        clearTimeout(this.effectTimer);
     }
 
-    spinReel() {
-        this.state.reelCol.unshift(this.state.reelCol.pop());
-        
-        this.setState({ 
-          timeRemaining: this.state.timeRemaining - 100
-        })
-      }
+    offsetTimer() {
+        this.effectTimer = setTimeout(() => {
+            this.offsetReel();
+        }, this.state.offsetSpeed);
+    };
 
-      getReelResults() {
+    spinReel() {      
+        this.ReelRef.current.style.cssText = "transition: 0.1s ease; top: -100px;";
+
+        this.offsetTimer();
+
+        this.setState({ 
+          timeRemaining: this.state.timeRemaining - this.state.speed,
+        })
+    }
+
+    getReelResults() {
         const firstResult = this.ReelRef.current.children[1].id;
         const secondResult = this.ReelRef.current.children[2].id;
         const thirdResult = this.ReelRef.current.children[3].id;
         const resultsCol = [firstResult, secondResult, thirdResult];
         this.props.onFinish(resultsCol);
-      }
+    }
 
-      componentWillMount() {
-          this.setState({
-              reelCol: [...reelCol],
-          })
+    componentWillMount() {
+        this.setState({
+            reelCol: [...reelCol],
+        })
+    }
 
-      }
-
-      componentDidUpdate() {
+    componentDidUpdate() {
         if (this.props.isInitSpin != this.state.isInitSpin) {
-            this.setState({
-                isInitSpin: !this.state.isInitSpin,
-                timeRemaining: this.props.timer
-            });
-
-            this.timer = setInterval(() => {
-                this.tick()
-              }, 100);
+            this.forceUpdateHandler();
         }
-      }
+    }
 
     componentDidMount() {
-        clearInterval(this.timer);
-    
-        this.setState({
-          timeRemaining: this.props.timer
-        });
-    
-        this.timer = setInterval(() => {
-          this.tick()
-        }, 100);
+        this.reset();
     }
 
     tick() {      
         if (this.state.timeRemaining <= 0) {
-          clearInterval(this.timer);        
-          this.getReelResults();       
+            if (this.props.isDebugMode) {
+                if (this.ReelRef.current.children[parseInt(this.props.debugConfig[1]) + 1].id == this.props.debugConfig[0]) {
+                    clearInterval(this.timer);     
+                    this.getReelResults();   
+                } else {
+                    this.manualSpin();
+                }                
+            } else {
+                this.getReelResults();     
+                clearInterval(this.timer);          
+            }
         } else {
           this.spinReel();
         }      
-      }
+    }
+
+    manualSpin() {
+        this.setState({ 
+            timeRemaining: this.state.timeRemaining + this.state.speed,
+        })
+    }
 
     renderReel() {
         return (
             this.state.reelCol.map((sym, i) => {
                 return (
-                    <img key={i} id={sym.symValue} src={sym.symSrc} style={{width: '100px', height: '100px'}}/>
+                    <img className={"Reel-img"} key={i} id={sym.symValue} src={sym.symSrc} style={{width: '100px', height: '100px'}}/>
                 )
             })
         );

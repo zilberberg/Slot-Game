@@ -16,8 +16,10 @@
     height: 300px;
     width: 100px;
 
-    top: -100px;
+    top: -200px;
     position: absolute;
+
+    transition: 0.1s ease;
 
     /* background-image: 
         url('../../images/2xBAR.png'),
@@ -37,10 +39,14 @@
         no-repeat;  */
 }
 
-
-
-
-
+.Reel-img {
+    position: relative;
+    transition: 0.3s ease;
+    width: 100px;
+    height: 100px;
+    top: 0px;
+    
+}
 
 @media (prefers-reduced-motion: no-preference) {
     .Reel {

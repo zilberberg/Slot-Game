@@ -1,0 +1,19 @@
+.Pay-container {
+    border: 1px solid black;
+    width: 200px;
+    /* padding: 10px; */
+    
+}
+
+.Blink-effect {
+    
+    background-color: red;
+    opacity: 1;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+}

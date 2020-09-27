@@ -5,7 +5,8 @@ class PayTable extends React.Component {
   render() {
     const { pay } = this.props;
     return (
-      <div className={"Text-container"}>
+      <div className={"Pay-container"}>
+          <div className={"Blink-effect"}/>
           <span>{pay}</span>
       </div>
     )
