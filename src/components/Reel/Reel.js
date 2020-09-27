@@ -64,7 +64,6 @@ class Reel extends React.Component {
     }
     
     offsetReel() {
-        // debugger
         this.ReelRef.current.style.cssText = "transition: none; top: -200px;";
         this.state.reelCol.unshift(this.state.reelCol.pop());
 
@@ -124,8 +123,8 @@ class Reel extends React.Component {
                     this.manualSpin();
                 }                
             } else {
-                this.getReelResults();     
                 clearInterval(this.timer);          
+                this.getReelResults();     
             }
         } else {
           this.spinReel();

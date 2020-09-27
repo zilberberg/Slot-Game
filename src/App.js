@@ -109,7 +109,6 @@ checkResults() {
   const [comboPay, comWinDict] = this.checkCombination();
 
   const merged = Merge(conWinDict, comWinDict);
-  // debugger
   this.setState({
     pay: consecutivePay + comboPay,
     isPaid: (consecutivePay + comboPay > 0),

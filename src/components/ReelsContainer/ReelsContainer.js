@@ -20,9 +20,6 @@ class ReelsContainer extends React.Component {
         return (
             reelsDictionary.map((reel, i) => {
                 const arr = [...this.props.winsPositions[i]];
-                if (arr.length > 0) {
-                    // debugger
-                }
                 return (
                     <Reel 
                         key={i}
@@ -40,8 +37,6 @@ class ReelsContainer extends React.Component {
     }
 
   render() {
-    const { isSpinning } = this.props;
-
     return (
       <div className={"ReelsContainer-root"}>
           {this.renderReels()}
